@@ -1,3 +1,15 @@
+# TO DELETE
+**/client
+
+
+# SERVER
+server/package-lock.json
+
+# CLIENT
+
+# SERVER/CLIENT
+**/node_modules
+
 # Logs
 logs
 *.log
