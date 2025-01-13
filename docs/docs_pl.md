@@ -9,12 +9,12 @@ to aplikacja webowa i mobilna umożliwiająca mieszkańcom śledzenie statusu wy
 ## TECHNOLOGIE
 Projekt wykorzystuje nowoczesne technologie zapewniające skalowalność, wydajność oraz łatwą rozbudowę:
 
-| **Komponent**   | **Technologia**      | **Opis**                                                                |
-| --------------- | -------------------- | ----------------------------------------------------------------------- |
-| **Backend**     | Node.js + Express.js | Obsługa API, logika biznesowa i uwierzytelnianie (JWT).                 |
-| **Frontend**    | React.js             | Dynamiczny, przyjazny użytkownikowi i responsywny interfejs webowy.     |
-| **Mobile**      | React Native         | Aplikacja mobilna na Android i iOS, obsługa map i zgłaszanie problemów. |
-| **Baza danych** | MySQL                | Początkowo hostowana lokalnie z XAMPP, skalowalna na większą bazę.      |
+| **Komponent**   | **Technologia**                | **Opis**                                                                |
+| --------------- | ------------------------------ | ----------------------------------------------------------------------- |
+| **Backend**     | Nest.js + Node.js + Express.js | Obsługa API, logika biznesowa i uwierzytelnianie (JWT).                 |
+| **Frontend**    | Next.js                        | Dynamiczny, przyjazny użytkownikowi i responsywny interfejs webowy.     |
+| **Mobile**      | React Native                   | Aplikacja mobilna na Android i iOS, obsługa map i zgłaszanie problemów. |
+| **Baza danych** | MySQL (XAMPP)                  | Początkowo hostowana lokalnie z XAMPP, skalowalna na większą bazę.      |
 
 ## Planowane funkcje
 
@@ -30,3 +30,25 @@ Projekt wykorzystuje nowoczesne technologie zapewniające skalowalność, wydajn
 ### Dla administratorów:
 - Zarządzanie zespołami i harmonogramami.
 - Tworzenie raportów i podsumowań.
+
+
+## SERVER
+
+```powershell
+npm init -y
+npm install express body-parser cors mysql2 dotenv nodemon
+```
+
+## CLIENT
+Would you like to use TypeScript? ... **No** / Yes
+Would you like to use ESLint? ... No / **Yes**
+Would you like to use Tailwind CSS? ... **No** / Yes
+Would you like your code inside a `src/` directory? ... No / **Yes**
+Would you like to use App Router? (recommended) ... No / **Yes**
+Would you like to use Turbopack for `next dev`? ... No / **Yes**
+Would you like to customize the import alias (`@/*` by default)? ... **No** / Yes
+
+```powershell
+npx create-next-app .
+npm install bootstrap axios
+```
