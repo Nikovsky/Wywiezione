@@ -1,0 +1,75 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start XAMPP",
+            "type": "shell",
+            "command": "C:\\xampp\\xampp-control.exe",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Backend (Nest.js)",
+            "type": "shell",
+            "command": "npm run dev",
+            "options": {
+                "cwd": "${workspaceFolder}/server"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Frontend (Next.js)",
+            "type": "shell",
+            "command": "npm run dev",
+            "options": {
+                "cwd": "${workspaceFolder}/client"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Open Localhost",
+            "type": "shell",
+            "command": "Start-Sleep -Seconds 5; start http://localhost:3000; start http://localhost/phpmyadmin",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Full Stack",
+            "type": "shell",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "Start XAMPP",
+                "Start Backend (Nest.js)",
+                "Start Frontend (Next.js)",
+                "Open Localhost"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
+//EOF

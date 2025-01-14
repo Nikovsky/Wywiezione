@@ -1,15 +1,20 @@
 import { Controller, Get, Post, Delete, Put, Body, Param, Module, Injectable } from '@nestjs/common';
-import pool from './db'; // Import the shared database pool
+import pool from './db';
 
 @Injectable()
 class UsersService {
     async findAll(): Promise<any> {
         const [rows] = await pool.query('SELECT * FROM users');
-        // console.log(rows);
         return rows;
     }
 
-    async create(user: { email: string; surname: string; first_name: string; second_name?: string; password: string }): Promise<any> {
+    async create(user: {
+        email: string;
+        surname: string;
+        first_name: string;
+        second_name?: string;
+        password: string
+    }): Promise<any> {
         const { email, surname, first_name, second_name, password } = user;
         const [result] = await pool.execute(
             'INSERT INTO users (email, surname, first_name, second_name, password) VALUES (?, ?, ?, ?, ?)',
@@ -32,19 +37,17 @@ class UsersService {
         second_name?: string | null;
         password: string;
         id_user: number;
-    }): Promise<{ message: string }> {
+    }): Promise<any> {
         const { email, surname, first_name, second_name, password, id_user } = user;
-
         const [result] = await pool.execute(
             'UPDATE users SET email = ?, surname = ?, first_name = ?, second_name = ?, password = ? WHERE id_user = ?',
             [email, surname, first_name, second_name, password, id_user]
         );
-
         if ((result as any).affectedRows === 0) {
             throw new Error(`User with ID ${id_user} not found`);
         }
-
-        return { message: `User with ID ${id_user} updated successfully` };
+        const [updatedUser] = await pool.execute('SELECT * FROM users WHERE id_user = ?', [id_user]);
+        return updatedUser[0];
     }
 }
 
@@ -58,7 +61,15 @@ class UsersController {
     }
 
     @Post('create')
-    async create(@Body() user: { email: string; surname: string; first_name: string; second_name?: string; password: string }) {
+    async create(
+        @Body() user: {
+            email: string;
+            surname: string;
+            first_name: string;
+            second_name?: string;
+            password: string
+        }
+    ) {
         return this.usersService.create(user);
     }
 
