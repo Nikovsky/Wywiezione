@@ -52,7 +52,49 @@
         {
             "label": "Open Localhost",
             "type": "shell",
-            "command": "Start-Sleep -Seconds 5; start http://localhost:3000; start http://localhost/phpmyadmin",
+            "command": "Start-Sleep -Seconds 5; start http://localhost/phpmyadmin; start http://localhost:3000;",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Initial Frontend Setup",
+            "type": "shell",
+            "command": "npm install",
+            "options": {
+                "cwd": "${workspaceFolder}/client"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Initial Backend Setup",
+            "type": "shell",
+            "command": "npm install",
+            "options": {
+                "cwd": "${workspaceFolder}/server"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
             "problemMatcher": []
         },
         {
@@ -64,6 +106,19 @@
                 "Start Backend (Nest.js)",
                 "Start Frontend (Next.js)",
                 "Open Localhost"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run Full Stack Initialization",
+            "type": "shell",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "Initial Frontend Setup",
+                "Initial Backend Setup"
             ],
             "group": {
                 "kind": "build",
