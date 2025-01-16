@@ -22,8 +22,6 @@ export class AppController {
     imports: [UsersModule],
     controllers: [AppController],
     providers: [AppService],
-    // controllers: [AppController, UsersController],
-    // providers: [AppService, UsersService],
 })
 export class AppModule { }
 //EOF

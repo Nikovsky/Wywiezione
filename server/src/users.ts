@@ -1,5 +1,47 @@
 import { Controller, Get, Post, Delete, Put, Body, Param, Module, Injectable } from '@nestjs/common';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import pool from './db';
+
+@Entity('users')
+export class User {
+    @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
+    id_user: number;
+
+    @Column({ type: 'varchar', length: 1024, unique: true, nullable: false })
+    email: string;
+
+    @Column({ type: 'varchar', length: 512, nullable: false })
+    surname: string;
+
+    @Column({ type: 'varchar', length: 512, nullable: false })
+    first_name: string;
+
+    @Column({ type: 'varchar', length: 512, nullable: true })
+    second_name?: string;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    created_at: Date;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+    updated_at: Date;
+
+    @Column({
+        type: 'enum',
+        enum: ['active', 'inactive', 'banned', ''],
+        default: 'active',
+    })
+    status: 'active' | 'inactive' | 'banned' | '';
+
+    @Column({
+        type: 'enum',
+        enum: ['root', 'administrator', 'worker', 'user'],
+        default: 'user',
+    })
+    role: 'root' | 'administrator' | 'worker' | 'user';
+
+    @Column({ type: 'varchar', length: 4096, nullable: false })
+    password: string;
+}
 
 @Injectable()
 class UsersService {
