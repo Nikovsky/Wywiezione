@@ -10,8 +10,9 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
+                "showReuseMessage": false,
+                "clear": false,
+                "close": true
             },
             "problemMatcher": []
         },
@@ -27,7 +28,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "new",
-                "showReuseMessage": true,
+                "showReuseMessage": false,
                 "clear": false
             },
             "problemMatcher": []
@@ -44,7 +45,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "new",
-                "showReuseMessage": true,
+                "showReuseMessage": false,
                 "clear": false
             },
             "problemMatcher": []
@@ -59,7 +60,8 @@
                 "focus": false,
                 "panel": "new",
                 "showReuseMessage": false,
-                "clear": false
+                "clear": false,
+                "close": true
             },
             "problemMatcher": []
         },
@@ -75,7 +77,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true,
+                "showReuseMessage": false,
                 "clear": false
             },
             "problemMatcher": []
@@ -92,7 +94,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true,
+                "showReuseMessage": false,
                 "clear": false
             },
             "problemMatcher": []
