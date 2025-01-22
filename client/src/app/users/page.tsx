@@ -1,19 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import api from '../../axios.conf';
-
-interface User {
-  id_user: number;
-  email: string;
-  surname: string;
-  first_name: string;
-  second_name?: null;
-  created_at: string;
-  updated_at: string;
-  status: string;
-  role: string;
-  password: string;
-}
+import { User } from '../types';
 
 export default function UsersPage() {
   const [data, setData] = useState<User[]>([]);

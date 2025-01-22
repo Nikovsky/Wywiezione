@@ -19,6 +19,7 @@
     "@nestjs/mapped-types": "^2.0.6",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
+    "argon2": "^0.41.1",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
     "class-transformer": "^0.5.1",

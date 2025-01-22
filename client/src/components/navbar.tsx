@@ -27,6 +27,12 @@ export default function Navbar() {
             <li className="nav-item">
               <Link href={isActiveHref('/users/create')} className={`nav-link ${isActive('/users/create')}`}>CREATE</Link>
             </li>
+            <li className="nav-item">
+              <Link href={isActiveHref('/register')} className={`nav-link ${isActive('/register')}`}>REGISTER</Link>
+            </li>
+            <li className="nav-item">
+              <Link href={isActiveHref('/login')} className={`nav-link ${isActive('/login')}`}>LOGIN</Link>
+            </li>
           </ul>
         </div>
       </div>

@@ -1,5 +1,13 @@
 {
     "version": "2.0.0",
+    // "inputs": [
+    //     {
+    //         "id": "install_all",
+    //         "type": "boolean",
+    //         "description": "Install all dependencies",
+    //         "default": false
+    //     }
+    // ],
     "tasks": [
         {
             "label": "Start XAMPP",
@@ -127,6 +135,20 @@
                 "isDefault": true
             }
         }
+        //,
+        // {
+        //     "label": "Install All Dependencies",
+        //     "type": "shell",
+        //     "dependsOrder": "parallel",
+        //     "dependsOn": [
+        //         "Run Full Stack Initialization",
+        //         "Run Full Stack"
+        //     ],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     }
+        // }
     ]
 }
 //EOF

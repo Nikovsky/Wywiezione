@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Delete, Put, Body, Param, Module, Injectable } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, Param, Module, Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import pool from './db';
+import DB_POOL from './db';
+import * as argon2 from 'argon2';
 
 @Entity('users')
 export class User {
@@ -45,8 +46,13 @@ export class User {
 
 @Injectable()
 class UsersService {
+    constructor(
+        @Inject('DB_POOL') private readonly pool: any
+    ) { }
+
+
     async findAll(): Promise<any> {
-        const [rows] = await pool.query('SELECT * FROM users');
+        const [rows] = await this.pool.query('SELECT * FROM users');
         return rows;
     }
 
@@ -55,10 +61,11 @@ class UsersService {
         surname: string;
         first_name: string;
         second_name?: string;
-        password: string
+        password: string;
     }): Promise<any> {
         const { email, surname, first_name, second_name, password } = user;
-        const [result] = await pool.execute(
+        console.log('Creating user:', user);
+        const [result] = await this.pool.execute(
             'INSERT INTO users (email, surname, first_name, second_name, password) VALUES (?, ?, ?, ?, ?)',
             [email, surname, first_name, second_name, password],
         );
@@ -66,7 +73,7 @@ class UsersService {
     }
 
     async delete(id: number): Promise<void> {
-        const [result] = await pool.execute('DELETE FROM users WHERE id_user = ?', [id]);
+        const [result] = await this.pool.execute('DELETE FROM users WHERE id_user = ?', [id]);
         if ((result as any).affectedRows === 0) {
             throw new Error(`User with ID ${id} not found`);
         }
@@ -81,15 +88,20 @@ class UsersService {
         id_user: number;
     }): Promise<any> {
         const { email, surname, first_name, second_name, password, id_user } = user;
-        const [result] = await pool.execute(
+        const [result] = await this.pool.execute(
             'UPDATE users SET email = ?, surname = ?, first_name = ?, second_name = ?, password = ? WHERE id_user = ?',
             [email, surname, first_name, second_name, password, id_user]
         );
         if ((result as any).affectedRows === 0) {
             throw new Error(`User with ID ${id_user} not found`);
         }
-        const [updatedUser] = await pool.execute('SELECT * FROM users WHERE id_user = ?', [id_user]);
+        const [updatedUser] = await this.pool.execute('SELECT * FROM users WHERE id_user = ?', [id_user]);
         return updatedUser[0];
+    }
+
+    async findByEmail(email: string): Promise<any> {
+        const [result] = await this.pool.execute('SELECT * FROM users WHERE email = ?', [email]);
+        return result[0];
     }
 }
 
@@ -135,11 +147,53 @@ class UsersController {
     ) {
         return this.usersService.update({ ...user, id_user: id });
     }
+
+    @Post('register')
+    async register(
+        @Body()
+        user: {
+            email: string;
+            surname: string;
+            first_name: string;
+            second_name?: string;
+            password: string;
+        },
+    ) {
+        try {
+            const hashedPassword = await argon2.hash(user.password);
+            return this.usersService.create({ ...user, password: hashedPassword });
+        } catch (error) {
+            throw new Error('User registration failed.');
+        }
+    }
+
+    @Post('login')
+    async login(
+        @Body()
+        credentials: {
+            email: string;
+            password: string;
+        },
+    ) {
+        const { email, password } = credentials;
+        const user = await this.usersService.findByEmail(email);
+        if (!user) {
+            throw new UnauthorizedException('Invalid email or password');
+        }
+        const isPasswordValid = await argon2.verify(user.password, password);
+        if (!isPasswordValid) {
+            throw new UnauthorizedException('Invalid email or password');
+        }
+
+        //TODO: Success: Return user data (may also return a JWT token here)
+        return { message: 'Login successful', user: { id_user: user.id_user, email: user.email, role: user.role } };
+    }
+
 }
 
 @Module({
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, { provide: "DB_POOL", useValue: DB_POOL }],
 })
 export class UsersModule { }
 //EOF
