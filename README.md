@@ -1,28 +1,54 @@
-# Wywiezione? 🚛
+```
+ _       __               _            _                ___
+| |     / /_  ___      __(_)__  ____  (_)___  ____  ___/__ \
+| | /| / / / / / | /| / / / _ \/_  / / / __ \/ __ \/ _ \/ _/
+| |/ |/ / /_/ /| |/ |/ / /  __/ / /_/ / /_/ / / / /  __/_/
+|__/|__/\__, / |__/|__/_/\___/ /___/_/\____/_/ /_/\___(_)
+       /____/
+```
+# Wywiezione?
+is a web and mobile application that enables residents to track waste collection status in real-time, report issues, and manage schedules. Workers have access to a task panel, and administrators can efficiently manage teams and schedules.
 
-**Wywiezione?** - to aplikacja mobilna i webowa, która umożliwia mieszkańcom śledzenie statusu wywozu odpadów w czasie rzeczywistym, zgłaszanie problemów i zarządzanie harmonogramami. Pracownicy mają dostęp do panelu zadaniowego, a administratorzy mogą efektywnie zarządzać zespołami i harmonogramami.
+## Technologies Used
+The project utilizes the following tech stack:
 
----
+### Frontend
+- [Next.js](https://nextjs.org/) – Modern React framework for SSR and SPA
+- TypeScript – Ensures type safety
+- Bootstrap – Styling and UI components
 
-## 🖼️ Wizualizacje ekranów
+### Backend
+- [NestJS](https://nestjs.com/) – Scalable Node.js framework
+- Express.js – HTTP request handling
+- MySQL (via [mysql2](https://www.npmjs.com/package/mysql2)) – Database connection
 
-### 1. Ekran główny aplikacji dla mieszkańców
-[<img src="./Wizualizacje/Wywiezione-01.png" width="300"/>](./Wizualizacje/Wywiezione-01.png)
+### Database
+- MariaDB (XAMPP)(for now)
 
-### 2. Menu zawierajace kafelki z dodatkowymi opcjami aplikacji
-[<img src="./Wizualizacje/Wywiezione-02.png" width="300"/>](./Wizualizacje/Wywiezione-02.png)
+## Features
+- [x] Real-time waste tracking
+- [x] User authentication (JWT)
+- [x] Secure password hashing (argon2)
+- [x] Admin dashboard for managing users
 
-### 3. Ekran ustawień aplikacji
-[<img src="./Wizualizacje/Wywiezione-03.png" width="300"/>](./Wizualizacje/Wywiezione-03.png)
+### Security
+- [argon2](https://www.npmjs.com/package/argon2) – Secure password hashing
+- JWT (JSON Web Token) – User authentication
+- CORS – Restrict unauthorized API access
 
-### 4. Ekran historii wywozów
-[<img src="./Wizualizacje/Wywiezione-04.png" width="300"/>](./Wizualizacje/Wywiezione-04.png)
+## Automated VS Code Tasks
+This repository includes a **VS Code task configuration** (`.vscode/tasks.json`) to automate the **installation of dependencies** and **running the application**.
 
-### 5. Ekran harmonogramu wywozów
-[<img src="./Wizualizacje/Wywiezione-06.png" width="300"/>](./Wizualizacje/Wywiezione-06.png)
+### Available Tasks
+1. **Install all dependencies** (Runs `npm install` for both `client/` and `server/`)
+2. **Start XAMPP (Apache & MySQL)**
+3. **Start Backend (NestJS)**
+4. **Start Frontend (Next.js)**
+5. **Open the application in the browser (`http://localhost:3000`)**
 
-### 5. Ekran zgłoszeń
-[<img src="./Wizualizacje/Wywiezione-08.png" width="300"/>](./Wizualizacje/Wywiezione-08.png)
-
-### 6. Ekran głównego okna dla pracowników
-[<img src="./Wizualizacje/Wywiezione-tablet-1.png" width="550"/>](./Wizualizacje/Wywiezione-04Wizualizacje/Wywiezione-tablet-1.png)
+### How to use the tasks in VS Code
+1. Open **VS Code**.
+2. Press **`Ctrl + Shift + P`** (or **`Cmd + Shift + P`** on macOS).
+3. Select **"Tasks: Run Task"**.
+4. Choose **"Install Dependencies"** to install all packages.
+5. Select **"Run Full Stack"** to start the application.
