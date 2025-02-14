@@ -2,22 +2,47 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token); // Convert token existence to boolean
-  }, [pathname]); // Re-check when path changes
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    router.push('/login');
+  }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear JWT token
-    router.push('/login'); // Redirect to login page
-  };
+  const checkTokenExpiration = useCallback(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp < currentTime) {
+        handleLogout(); // Auto logout if expired
+      } else {
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      console.error('Invalid token:', error);
+      handleLogout();
+    }
+  }, [handleLogout]);
+
+  useEffect(() => {
+    checkTokenExpiration();
+    const interval = setInterval(checkTokenExpiration, 20000);
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [checkTokenExpiration]);
 
   const isActive = (href: string) => (pathname === href ? 'active' : '');
   const isActiveHref = (href: string) => (pathname === href ? '#' : href);
