@@ -2,17 +2,24 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
     router.push('/login');
   }, [router]);
 
@@ -28,7 +35,7 @@ export default function Navbar() {
       const currentTime = Date.now() / 1000;
 
       if (decoded.exp < currentTime) {
-        handleLogout(); // Auto logout if expired
+        handleLogout();
       } else {
         setIsLoggedIn(true);
       }
@@ -40,8 +47,12 @@ export default function Navbar() {
 
   useEffect(() => {
     checkTokenExpiration();
-    const interval = setInterval(checkTokenExpiration, 20000);
-    return () => clearInterval(interval); // Cleanup on unmount
+    intervalRef.current = setInterval(checkTokenExpiration, 20000);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [checkTokenExpiration]);
 
   const isActive = (href: string) => (pathname === href ? 'active' : '');

@@ -27,13 +27,12 @@ export default function LoginPage() {
     try {
       const response = await api.post('/auth/login', { email, password });
 
-      // 🔹 Save token to localStorage
       localStorage.setItem('token', response.data.accessToken);
       setSuccess(response.data.message);
       console.log('Logged in user:', response.data.user);
 
-      // 🔹 Redirect to homepage ("/") after successful login
-      router.push('/');
+      window.location.href = '/'; //refresh navbar
+      // router.push('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     }
