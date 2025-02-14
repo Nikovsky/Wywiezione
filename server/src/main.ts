@@ -21,6 +21,10 @@ async function bootstrap() {
         process.exit(1);
     }
 
+    // JWT configuration
+    console.log('JWT_SECRET:', process.env.JWT_SECRET);
+    console.log('JWT_EXPIRES_IN:', process.env.JWT_EXPIRES_IN);
+
     // Create the NestJS application
     const app = await NestFactory.create(AppModule);
 

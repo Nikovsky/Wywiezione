@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Delete, Put, Body, Param, Module, Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, Param, Module, Injectable, Inject, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import DB_POOL from './db';
 import * as argon2 from 'argon2';
+import { AuthGuard } from '@nestjs/passport';
 
 @Entity('users')
 export class User {
@@ -109,6 +110,7 @@ class UsersService {
 class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     async findAll() {
         return this.usersService.findAll();

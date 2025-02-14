@@ -13,7 +13,12 @@ export default function UsersPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/users');
+        const token = localStorage.getItem('token');
+        const response = await api.get('/users', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         console.log(response.data);
         setData(response.data);
       } catch (error: any) {

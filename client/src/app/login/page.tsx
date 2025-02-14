@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import api from '../../axios.conf';
 
 export default function LoginPage() {
@@ -8,6 +9,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const router = useRouter();
+
+  // Redirect to "/" if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/');
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,9 +25,15 @@ export default function LoginPage() {
     setSuccess(null);
 
     try {
-      const response = await api.post('/users/login', { email, password });
+      const response = await api.post('/auth/login', { email, password });
+
+      // 🔹 Save token to localStorage
+      localStorage.setItem('token', response.data.accessToken);
       setSuccess(response.data.message);
       console.log('Logged in user:', response.data.user);
+
+      // 🔹 Redirect to homepage ("/") after successful login
+      router.push('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     }
@@ -56,3 +72,4 @@ export default function LoginPage() {
     </div>
   );
 }
+//EOF

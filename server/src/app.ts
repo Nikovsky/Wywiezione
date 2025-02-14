@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Delete, Body, Param, Module, Injectable } from '@nestjs/common';
 import { UsersModule } from './users';
+import { AuthModule } from './auth';
 
 @Injectable()
 export class AppService {
@@ -19,7 +20,7 @@ export class AppController {
 }
 
 @Module({
-    imports: [UsersModule],
+    imports: [UsersModule, AuthModule],
     controllers: [AppController],
     providers: [AppService],
 })
