@@ -11,12 +11,9 @@ export default function LoginPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
 
-  // Redirect to "/" if already logged in
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/');
-    }
+    if (token) { router.push('/'); }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,9 +27,7 @@ export default function LoginPage() {
       localStorage.setItem('token', response.data.accessToken);
       setSuccess(response.data.message);
       console.log('Logged in user:', response.data.user);
-
-      window.location.href = '/'; //refresh navbar
-      // router.push('/');
+      router.push('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     }

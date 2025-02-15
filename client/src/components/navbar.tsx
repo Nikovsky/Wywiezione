@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
 
@@ -20,10 +20,10 @@ export default function Navbar() {
       intervalRef.current = null;
     }
 
-    router.push('/login');
+    await router.push('/login');
   }, [router]);
 
-  const checkTokenExpiration = useCallback(() => {
+  const checkTokenExpiration = useCallback(async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setIsLoggedIn(false);
@@ -35,13 +35,13 @@ export default function Navbar() {
       const currentTime = Date.now() / 1000;
 
       if (decoded.exp < currentTime) {
-        handleLogout();
+        await handleLogout();
       } else {
         setIsLoggedIn(true);
       }
     } catch (error) {
       console.error('Invalid token:', error);
-      handleLogout();
+      await handleLogout();
     }
   }, [handleLogout]);
 
@@ -49,11 +49,9 @@ export default function Navbar() {
     checkTokenExpiration();
     intervalRef.current = setInterval(checkTokenExpiration, 20000);
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) { clearInterval(intervalRef.current); }
     };
-  }, [checkTokenExpiration]);
+  }, [pathname]);
 
   const isActive = (href: string) => (pathname === href ? 'active' : '');
   const isActiveHref = (href: string) => (pathname === href ? '#' : href);
